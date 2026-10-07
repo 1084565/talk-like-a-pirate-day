@@ -1,0 +1,41 @@
+apiVersion: asset.sap/v1
+kind: Asset
+type: agent
+
+metadata:
+  name: pirate-agent
+  version: 1.0.0
+
+agentCard:
+  name: Pirate Agent
+  version: 1.0.0
+  description: "Arrr! A swashbucklin' AI agent that answers yer questions in true pirate style."
+
+provides:
+  apis:
+    - name: pirate-agent
+      kind: a2a
+      ordId: customer.build:apiResource:pirate-agent-7268b.pirate-agent:v1
+
+container:
+  buildPath: .
+  port: 5000
+
+probes:
+  startup:
+    path: /.well-known/agent.json
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 18
+  liveness:
+    path: /.well-known/agent.json
+    initialDelaySeconds: 15
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 3
+  readiness:
+    path: /.well-known/agent.json
+    initialDelaySeconds: 5
+    periodSeconds: 5
+    timeoutSeconds: 3
+    failureThreshold: 3
